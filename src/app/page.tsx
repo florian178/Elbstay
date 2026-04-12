@@ -51,7 +51,7 @@ export default function Home() {
         {/* Background Image */}
         <div className="absolute inset-0 z-0">
           <Image
-            src="/images/dresden_hero_ultra_wide.jpg"
+            src="/images/dresden_hero_user_final.jpg"
             alt="Dresden Skyline Sunset"
             fill
             className="object-cover scale-105 animate-in fade-in duration-1000"
