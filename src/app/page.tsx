@@ -51,7 +51,7 @@ export default function Home() {
         {/* Background Image */}
         <div className="absolute inset-0 z-0">
           <Image
-            src="/images/dresden_premium_skyline.png"
+            src="/images/dresden_hero_ultra_highres.png"
             alt="Dresden Skyline Sunset"
             fill
             className="object-cover scale-105 animate-in fade-in duration-1000"
@@ -60,8 +60,8 @@ export default function Home() {
             sizes="100vw"
             unoptimized
           />
-          {/* Overlay gradient - darker at the bottom for text contrast */}
-          <div className="absolute inset-0 bg-gradient-to-t from-background via-background/40 to-black/40" />
+          {/* Overlay gradient - heavily darkened at the bottom for crisp white text contrast */}
+          <div className="absolute inset-0 bg-gradient-to-t from-black/90 via-black/40 to-black/20" />
         </div>
 
         <motion.div 
@@ -197,9 +197,9 @@ export default function Home() {
                   </span>
                 </div>
                 <div>
-                  <h3 className="text-2xl md:text-3xl font-bold mb-3 tracking-tight">15% Günstiger buchen</h3>
+                  <h3 className="text-2xl md:text-3xl font-bold mb-3 tracking-tight">7% Günstiger buchen</h3>
                   <p className="text-white/80 text-lg max-w-lg leading-relaxed">
-                    Warum AirBnb Gebühren zahlen? Buchen Sie direkt über unsere Website und sparen Sie bares Geld bei voller Flexibilität.
+                    Warum Plattform-Gebühren zahlen? Buchen Sie direkt über unsere Website und sparen Sie bares Geld bei voller Flexibilität.
                   </p>
                 </div>
               </div>
@@ -256,7 +256,7 @@ export default function Home() {
             <motion.div variants={fadeUpVar} className="flex flex-col items-center pt-8 md:pt-0 pb-8 md:pb-0 px-4">
               <ShieldCheck className="h-10 w-10 text-primary mb-4" />
               <h4 className="text-xl font-bold mb-2">Sichere Buchung</h4>
-              <p className="text-muted-foreground">Echtzeit-Synchronisation mit dem Channel Manager. Keine Doppelbuchungen.</p>
+              <p className="text-muted-foreground">Einfache und absolut sichere Zahlung in Echtzeit via PayPal, Stripe oder Kreditkarte.</p>
             </motion.div>
             <motion.div variants={fadeUpVar} className="flex flex-col items-center py-8 md:py-0 px-4">
               <Coffee className="h-10 w-10 text-primary mb-4" />
