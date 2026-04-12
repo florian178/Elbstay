@@ -1,0 +1,29 @@
+import { NextResponse } from 'next/server';
+import fs from 'fs';
+import path from 'path';
+import { urbanGallery, premiumGallery } from '@/lib/images';
+
+export async function GET() {
+  return NextResponse.json({ urbanGallery, premiumGallery });
+}
+
+export async function POST(req: Request) {
+  try {
+    const data = await req.json();
+    
+    // We are going to directly write to the src/lib/images.ts file.
+    // This allows the local dev server to immediately pick up the changes.
+    const filePath = path.join(process.cwd(), 'src', 'lib', 'images.ts');
+    
+    let content = `export interface ImageCategory {\n  title: string;\n  images: string[];\n}\n\n`;
+    content += `export const urbanGallery: ImageCategory[] = ${JSON.stringify(data.urbanGallery, null, 2)};\n\n`;
+    content += `export const premiumGallery: ImageCategory[] = ${JSON.stringify(data.premiumGallery, null, 2)};\n`;
+
+    fs.writeFileSync(filePath, content, 'utf8');
+    
+    return NextResponse.json({ success: true });
+  } catch (err) {
+    console.error("Failed to save gallery file:", err);
+    return NextResponse.json({ success: false, error: String(err) }, { status: 500 });
+  }
+}
