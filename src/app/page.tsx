@@ -173,70 +173,112 @@ export default function Home() {
     <div className="flex flex-col min-h-screen">
 
       {/* ═══════════════════════════════════════════
-          1. HERO
+          1. HERO – Conversion-Optimiert
       ═══════════════════════════════════════════ */}
-      <section className="relative min-h-[92vh] flex items-center justify-center overflow-hidden pt-20 pb-16">
+      <section className="relative min-h-[100vh] flex items-center justify-center overflow-hidden">
+        {/* Background Image with Ken Burns effect */}
         <div className="absolute inset-0 z-0">
           <Image
             src="/images/dresden_hero_user_final.jpg"
             alt="Dresden Skyline bei Sonnenuntergang"
             fill
-            className="object-cover scale-105"
+            className="object-cover scale-110 animate-[kenburns_20s_ease-in-out_infinite_alternate]"
             priority
             quality={100}
             sizes="100vw"
             unoptimized
           />
-          <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/35 to-black/15" />
+          {/* Multi-layer gradient for depth + text legibility */}
+          <div className="absolute inset-0 bg-gradient-to-t from-black/85 via-black/40 to-black/20" />
+          <div className="absolute inset-0 bg-gradient-to-r from-black/30 via-transparent to-black/30" />
+        </div>
+
+        {/* Dresden Silhouette SVG at bottom */}
+        <div className="absolute bottom-0 left-0 right-0 z-[1] opacity-[0.06] pointer-events-none">
+          <svg viewBox="0 0 1440 200" fill="white" xmlns="http://www.w3.org/2000/svg" className="w-full h-auto">
+            {/* Stylized Dresden skyline silhouette */}
+            <path d="M0,200 L0,180 L60,180 L60,160 L80,160 L80,140 L90,140 L90,120 L100,120 L100,100 L110,80 L115,60 L120,80 L130,100 L130,120 L140,120 L140,140 L160,140 L160,120 L170,120 L170,100 L175,70 L178,50 L180,30 L182,50 L185,70 L190,100 L190,120 L200,120 L200,140 L220,140 L220,160 L260,160 L260,140 L270,140 L270,100 L275,80 L280,60 L285,40 L288,25 L290,15 L292,25 L295,40 L300,60 L305,80 L310,100 L310,140 L320,140 L320,160 L380,160 L380,150 L390,150 L390,130 L395,110 L398,90 L400,110 L405,130 L410,150 L430,150 L430,160 L500,160 L500,170 L550,170 L550,155 L560,155 L560,140 L565,125 L570,110 L575,100 L578,90 L580,85 L582,90 L585,100 L590,110 L595,125 L600,140 L600,155 L610,155 L610,170 L680,170 L680,160 L700,160 L700,150 L710,150 L710,135 L715,120 L718,110 L720,105 L722,110 L725,120 L730,135 L730,150 L740,150 L740,160 L800,160 L800,170 L900,170 L900,160 L920,160 L920,145 L925,130 L930,120 L935,115 L940,120 L945,130 L950,145 L950,160 L980,160 L980,170 L1060,170 L1060,155 L1070,155 L1070,130 L1075,110 L1080,95 L1085,80 L1088,70 L1090,65 L1092,70 L1095,80 L1100,95 L1105,110 L1110,130 L1110,155 L1120,155 L1120,170 L1200,170 L1200,160 L1230,160 L1230,150 L1240,150 L1240,140 L1245,130 L1250,125 L1255,130 L1260,140 L1260,150 L1270,150 L1270,160 L1320,160 L1320,170 L1380,170 L1380,180 L1440,180 L1440,200 Z" />
+          </svg>
         </div>
 
         <motion.div
           initial="hidden"
           animate="visible"
           variants={stagger}
-          className="relative z-10 max-w-4xl mx-auto px-4 md:px-6 text-center"
+          className="relative z-10 max-w-4xl mx-auto px-4 md:px-6 text-center pt-24 pb-20"
         >
-          <motion.span
+          {/* Social Proof Badge */}
+          <motion.div
             variants={fadeUp}
-            className="inline-block py-1.5 px-5 rounded-full bg-white/10 backdrop-blur-md border border-white/20 text-white text-sm tracking-[0.2em] uppercase font-medium mb-8 shadow-lg"
+            className="inline-flex items-center gap-2 py-2 px-5 rounded-full bg-white/10 backdrop-blur-md border border-white/20 text-white text-sm font-medium mb-8 shadow-lg"
           >
-            Boutique Apartments in Dresden
-          </motion.span>
+            <Star className="h-4 w-4 fill-amber-400 text-amber-400" />
+            <span className="tracking-wide">4.9 von 5 · Hervorragend bewertet</span>
+          </motion.div>
 
+          {/* Main Headline – emotional + klar */}
           <motion.h1
             variants={fadeUp}
-            className="font-serif text-5xl md:text-7xl lg:text-8xl font-bold text-white mb-6 drop-shadow-lg leading-[1.1] tracking-tight"
+            className="font-serif text-[2.75rem] md:text-7xl lg:text-[5.5rem] font-bold text-white mb-6 drop-shadow-lg leading-[1.08] tracking-tight"
           >
-            Ankommen.<br className="hidden sm:block" />
-            Durchatmen.<br className="hidden sm:block" />
-            Dresden erleben.
+            Ihr Zuhause in Dresden.<br className="hidden sm:block" />
+            <span className="text-white/80">Direkt an der Elbe.</span>
           </motion.h1>
 
+          {/* Subheadline – konkreter Nutzen */}
           <motion.p
             variants={fadeUp}
-            className="text-lg md:text-xl text-white/90 mb-10 leading-relaxed max-w-2xl mx-auto"
+            className="text-lg md:text-xl text-white/85 mb-8 leading-relaxed max-w-2xl mx-auto"
           >
-            Stilvolle Ferienwohnungen an der Elbe – für Paare, Städtereisende
-            und alle, die Dresden von seiner schönsten Seite entdecken möchten.
+            Design-Apartments im Herzen der Altstadt – ab 120€ pro Nacht.
+            Buchen Sie direkt und sparen Sie bis zu 15% gegenüber Airbnb.
           </motion.p>
 
-          <motion.div variants={fadeUp} className="flex flex-col sm:flex-row items-center justify-center gap-4">
+          {/* Trust Bullets */}
+          <motion.div
+            variants={fadeUp}
+            className="flex flex-wrap items-center justify-center gap-x-6 gap-y-3 mb-10"
+          >
+            {[
+              { icon: Star, text: "4.9 ★ Bewertung" },
+              { icon: MapPin, text: "5 Min. zur Frauenkirche" },
+              { icon: Percent, text: "Bestpreis bei Direktbuchung" },
+            ].map((item, idx) => (
+              <div key={idx} className="flex items-center gap-2 text-white/80 text-sm">
+                <item.icon className="h-4 w-4 text-white/60" />
+                <span>{item.text}</span>
+              </div>
+            ))}
+          </motion.div>
+
+          {/* CTA – stärker, klarer */}
+          <motion.div variants={fadeUp} className="flex flex-col sm:flex-row items-center justify-center gap-4 mb-6">
             <Link href="#book" className="w-full sm:w-auto">
-              <Button size="lg" className="w-full text-base h-14 px-10 rounded-full shadow-xl hover:scale-105 transition-transform duration-300">
-                Verfügbarkeit prüfen
+              <Button size="lg" className="w-full text-base h-16 px-12 rounded-full shadow-2xl hover:scale-105 transition-transform duration-300 font-semibold text-[15px]">
+                <CalendarCheck className="mr-2 h-5 w-5" />
+                Jetzt Verfügbarkeit prüfen
               </Button>
             </Link>
             <Link href="#apartments" className="w-full sm:w-auto">
               <Button
                 size="lg"
                 variant="outline"
-                className="w-full text-base h-14 px-10 rounded-full bg-white/10 backdrop-blur-md text-white border-white/30 hover:bg-white hover:text-foreground transition-all duration-300 shadow-xl"
+                className="w-full text-base h-16 px-10 rounded-full bg-white/10 backdrop-blur-md text-white border-white/30 hover:bg-white hover:text-foreground transition-all duration-300 shadow-xl font-semibold"
               >
                 Apartments entdecken
+                <ArrowRight className="ml-2 h-5 w-5" />
               </Button>
             </Link>
           </motion.div>
+
+          {/* Micro-Trust unter CTA */}
+          <motion.p variants={fadeUp} className="text-white/40 text-xs tracking-wide">
+            Kostenlose Stornierung · Keine versteckten Gebühren · Sofortige Bestätigung
+          </motion.p>
         </motion.div>
+
+        {/* Bottom fade to content */}
+        <div className="absolute bottom-0 left-0 right-0 h-24 bg-gradient-to-t from-background to-transparent z-[2]" />
       </section>
 
       {/* ═══════════════════════════════════════════
