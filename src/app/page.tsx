@@ -4,8 +4,16 @@ import Image from "next/image";
 import Link from "next/link";
 import { Button } from "@/components/ui/Button";
 import { ApartmentCard } from "@/components/apartment/ApartmentCard";
-import { ShieldCheck, Percent, MessageCircle, MapPin, Wifi, Key, Sparkles, Coffee } from "lucide-react";
-import { motion } from "framer-motion";
+import {
+  Wifi, Tv, UtensilsCrossed, Coffee, WashingMachine, Key, BedDouble, Bath,
+  MapPin, Star, Percent, HeartHandshake, PhoneCall, ChevronDown,
+  Landmark, TreePine, Bike, Music,
+  CalendarCheck, ArrowRight
+} from "lucide-react";
+import { motion, AnimatePresence } from "framer-motion";
+import { useState } from "react";
+
+/* ─── DATA ─── */
 
 const APARTMENTS = [
   {
@@ -32,175 +40,335 @@ const APARTMENTS = [
   }
 ];
 
-// Animation variants
-const fadeUpVar = {
+const AMENITIES = [
+  { icon: Wifi, label: "Highspeed-WLAN" },
+  { icon: Tv, label: "55\" Smart-TV" },
+  { icon: UtensilsCrossed, label: "Voll ausgestattete Küche" },
+  { icon: Coffee, label: "Kaffeemaschine" },
+  { icon: WashingMachine, label: "Waschmaschine" },
+  { icon: Key, label: "Self-Check-in 24/7" },
+  { icon: BedDouble, label: "Premium-Bettwäsche" },
+  { icon: Bath, label: "Handtücher & Pflegeprodukte" },
+];
+
+const REVIEWS = [
+  {
+    name: "Sarah & Markus",
+    date: "März 2026",
+    stars: 5,
+    text: "Ein wunderschönes Apartment mit Liebe zum Detail. Die Lage direkt an der Elbe ist ein Traum – wir haben jeden Morgen den Sonnenaufgang genossen. Absolut empfehlenswert!",
+  },
+  {
+    name: "Dr. Thomas Richter",
+    date: "Februar 2026",
+    stars: 5,
+    text: "Perfekt für meinen Geschäftsaufenthalt. Schnelles WLAN, ruhige Lage und trotzdem alles fußläufig erreichbar. Die Direktbuchung war unkompliziert und günstig.",
+  },
+  {
+    name: "Julia & Freundinnen",
+    date: "Januar 2026",
+    stars: 5,
+    text: "Unser Mädels-Wochenende in Dresden war dank ElbStay einfach perfekt. Die Wohnung ist wunderschön, die Küche top ausgestattet und die Altstadt nur Minuten entfernt.",
+  },
+];
+
+const DRESDEN_HIGHLIGHTS = [
+  {
+    icon: Landmark,
+    title: "Frauenkirche & Altstadt",
+    text: "Barocke Architektur, Semperoper und der berühmte Striezelmarkt – alles in 10 Minuten zu Fuß.",
+  },
+  {
+    icon: TreePine,
+    title: "Elbwiesen & Natur",
+    text: "Direkt vor der Tür: Spaziergänge entlang der Elbe mit Blick auf das Elbflorenz-Panorama.",
+  },
+  {
+    icon: Bike,
+    title: "Elbradweg",
+    text: "Einer der schönsten Radwege Europas führt direkt an unseren Apartments vorbei.",
+  },
+  {
+    icon: Music,
+    title: "Dresdner Neustadt",
+    text: "Das kreative Szeneviertel mit unzähligen Cafés, Boutiquen und Bars – nur wenige Minuten entfernt.",
+  },
+];
+
+const FAQS = [
+  {
+    q: "Wie funktioniert der Check-in?",
+    a: "Sie erhalten vor Ihrer Anreise einen digitalen Zugangscode per E-Mail. Damit können Sie jederzeit – 24 Stunden am Tag, 7 Tage die Woche – selbstständig einchecken. Kein Schlüssel, keine Wartezeit.",
+  },
+  {
+    q: "Gibt es Parkmöglichkeiten?",
+    a: "Ja, in unmittelbarer Nähe befinden sich mehrere öffentliche Parkplätze und Parkhäuser. Auf Anfrage vermitteln wir Ihnen gerne einen Stellplatz.",
+  },
+  {
+    q: "Sind Haustiere erlaubt?",
+    a: "In unseren Apartments sind leider keine Haustiere gestattet, um allen Gästen ein sauberes und allergenfreies Umfeld zu bieten.",
+  },
+  {
+    q: "Wie ist die Stornierungsregelung?",
+    a: "Bei Direktbuchung bieten wir eine flexible Stornierung bis 7 Tage vor Anreise an. Danach berechnen wir 50% des Gesamtpreises. Details finden Sie in unseren AGB.",
+  },
+  {
+    q: "Wie komme ich am besten nach Dresden?",
+    a: "Dresden ist hervorragend per Bahn (Hauptbahnhof in 15 Min.), Auto (A4/A17) und Flugzeug (Flughafen Dresden, 20 Min.) erreichbar. Vom Bahnhof fahren Sie mit der Straßenbahn direkt zu uns.",
+  },
+];
+
+/* ─── ANIMATION VARIANTS ─── */
+
+const fadeUp = {
   hidden: { opacity: 0, y: 30 },
-  visible: { opacity: 1, y: 0, transition: { duration: 0.8 } }
+  visible: { opacity: 1, y: 0, transition: { duration: 0.7, ease: [0, 0, 0.2, 1] as const } },
 };
 
-const staggerContainer = {
+const stagger = {
   hidden: { opacity: 0 },
-  visible: { opacity: 1, transition: { staggerChildren: 0.15 } }
+  visible: { opacity: 1, transition: { staggerChildren: 0.12 } },
 };
+
+/* ─── FAQ ITEM ─── */
+
+function FaqItem({ q, a }: { q: string; a: string }) {
+  const [open, setOpen] = useState(false);
+  return (
+    <div className="border-b border-border/60">
+      <button
+        onClick={() => setOpen(!open)}
+        className="w-full flex items-center justify-between py-6 text-left group"
+      >
+        <span className="text-lg font-semibold text-foreground pr-8 group-hover:text-primary transition-colors">
+          {q}
+        </span>
+        <ChevronDown
+          className={`h-5 w-5 text-muted-foreground shrink-0 transition-transform duration-300 ${open ? "rotate-180" : ""}`}
+        />
+      </button>
+      <AnimatePresence initial={false}>
+        {open && (
+          <motion.div
+            initial={{ height: 0, opacity: 0 }}
+            animate={{ height: "auto", opacity: 1 }}
+            exit={{ height: 0, opacity: 0 }}
+            transition={{ duration: 0.3, ease: "easeInOut" }}
+            className="overflow-hidden"
+          >
+            <p className="pb-6 text-muted-foreground leading-relaxed max-w-3xl">
+              {a}
+            </p>
+          </motion.div>
+        )}
+      </AnimatePresence>
+    </div>
+  );
+}
+
+/* ─── PAGE ─── */
 
 export default function Home() {
   return (
     <div className="flex flex-col min-h-screen">
-      {/* Hero Section */}
-      <section className="relative min-h-[90vh] flex items-center justify-center overflow-hidden pt-20 pb-16">
-        {/* Background Image */}
+
+      {/* ═══════════════════════════════════════════
+          1. HERO
+      ═══════════════════════════════════════════ */}
+      <section className="relative min-h-[92vh] flex items-center justify-center overflow-hidden pt-20 pb-16">
         <div className="absolute inset-0 z-0">
           <Image
             src="/images/dresden_hero_user_final.jpg"
-            alt="Dresden Skyline Sunset"
+            alt="Dresden Skyline bei Sonnenuntergang"
             fill
-            className="object-cover scale-105 animate-in fade-in duration-1000"
+            className="object-cover scale-105"
             priority
             quality={100}
             sizes="100vw"
             unoptimized
           />
-          {/* Overlay gradient - heavily darkened at the bottom for crisp white text contrast */}
-          <div className="absolute inset-0 bg-gradient-to-t from-black/90 via-black/40 to-black/20" />
+          <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/35 to-black/15" />
         </div>
 
-        <motion.div 
+        <motion.div
           initial="hidden"
           animate="visible"
-          variants={staggerContainer}
-          className="container relative z-10 max-w-7xl mx-auto px-4 md:px-6 flex flex-col"
+          variants={stagger}
+          className="relative z-10 max-w-4xl mx-auto px-4 md:px-6 text-center"
         >
-          <div className="text-center max-w-4xl mx-auto">
-            <motion.span variants={fadeUpVar} className="inline-block py-1.5 px-4 rounded-full bg-background/20 backdrop-blur-md border border-white/20 text-white text-sm tracking-[0.2em] uppercase font-medium mb-8 shadow-xl">
-              Boutique Apartments
-            </motion.span>
-            <motion.h1 variants={fadeUpVar} className="font-serif tracking-tight text-5xl md:text-7xl lg:text-8xl font-bold text-white mb-6 drop-shadow-lg leading-tight">
-              Stilvoll wohnen <br className="hidden md:block"/> in Dresden
-            </motion.h1>
-            <motion.p variants={fadeUpVar} className="text-lg md:text-2xl text-white/95 mb-10 font-medium drop-shadow-md leading-relaxed">
-              Erleben Sie exklusiven Wohnkomfort in bester Lage. <br className="hidden sm:block"/> Buchen Sie direkt bei uns für den besten Preis.
-            </motion.p>
-            <motion.div variants={fadeUpVar} className="flex flex-col sm:flex-row items-center justify-center gap-4 mb-16">
-              <Link href="#apartments" className="w-full sm:w-auto">
-                <Button size="lg" className="w-full text-base h-14 px-8 rounded-full shadow-xl hover:scale-105 transition-transform duration-300">
-                  Apartments ansehen
-                </Button>
-              </Link>
-              <Link href="#book" className="w-full sm:w-auto">
-                <Button size="lg" variant="outline" className="w-full text-base h-14 px-8 rounded-full bg-white/10 backdrop-blur-md text-white border-white/30 hover:bg-white hover:text-foreground transition-all duration-300 shadow-xl">
-                  Verfügbarkeit prüfen
-                </Button>
-              </Link>
-            </motion.div>
-            
-            {/* Trust Badges directly on Hero */}
-            <motion.div variants={fadeUpVar} className="grid grid-cols-2 md:grid-cols-4 gap-4 md:gap-8 pt-8 border-t border-white/20">
-              {[
-                { icon: MapPin, text: "Beste Lage" },
-                { icon: Sparkles, text: "Premium Design" },
-                { icon: Percent, text: "Keine Gebühren" },
-                { icon: Key, text: "24/7 Check-in" },
-              ].map((feature, idx) => (
-                <div key={idx} className="flex flex-col items-center justify-center gap-2 text-white/90">
-                  <feature.icon className="h-6 w-6 opacity-80" />
-                  <span className="text-sm md:text-base font-semibold">{feature.text}</span>
-                </div>
-              ))}
-            </motion.div>
-          </div>
+          <motion.span
+            variants={fadeUp}
+            className="inline-block py-1.5 px-5 rounded-full bg-white/10 backdrop-blur-md border border-white/20 text-white text-sm tracking-[0.2em] uppercase font-medium mb-8 shadow-lg"
+          >
+            Boutique Apartments in Dresden
+          </motion.span>
+
+          <motion.h1
+            variants={fadeUp}
+            className="font-serif text-5xl md:text-7xl lg:text-8xl font-bold text-white mb-6 drop-shadow-lg leading-[1.1] tracking-tight"
+          >
+            Ankommen.<br className="hidden sm:block" />
+            Durchatmen.<br className="hidden sm:block" />
+            Dresden erleben.
+          </motion.h1>
+
+          <motion.p
+            variants={fadeUp}
+            className="text-lg md:text-xl text-white/90 mb-10 leading-relaxed max-w-2xl mx-auto"
+          >
+            Stilvolle Ferienwohnungen an der Elbe – für Paare, Städtereisende
+            und alle, die Dresden von seiner schönsten Seite entdecken möchten.
+          </motion.p>
+
+          <motion.div variants={fadeUp} className="flex flex-col sm:flex-row items-center justify-center gap-4">
+            <Link href="#book" className="w-full sm:w-auto">
+              <Button size="lg" className="w-full text-base h-14 px-10 rounded-full shadow-xl hover:scale-105 transition-transform duration-300">
+                Verfügbarkeit prüfen
+              </Button>
+            </Link>
+            <Link href="#apartments" className="w-full sm:w-auto">
+              <Button
+                size="lg"
+                variant="outline"
+                className="w-full text-base h-14 px-10 rounded-full bg-white/10 backdrop-blur-md text-white border-white/30 hover:bg-white hover:text-foreground transition-all duration-300 shadow-xl"
+              >
+                Apartments entdecken
+              </Button>
+            </Link>
+          </motion.div>
         </motion.div>
       </section>
 
-      {/* Bento Grid Highlights */}
-      <section className="py-24 md:py-32 bg-background relative overflow-hidden">
-        {/* Subtle background decoration */}
-        <div className="absolute top-0 right-0 -translate-y-12 translate-x-1/4 opacity-[0.02] pointer-events-none">
-          <svg width="404" height="404" fill="none" viewBox="0 0 404 404"><defs><pattern id="dots" x="0" y="0" width="20" height="20" patternUnits="userSpaceOnUse"><rect x="0" y="0" width="4" height="4" fill="currentColor"></rect></pattern></defs><rect width="404" height="404" fill="url(#dots)"></rect></svg>
-        </div>
+      {/* ═══════════════════════════════════════════
+          2. EMOTIONALER INTRO-TEXT
+      ═══════════════════════════════════════════ */}
+      <section className="py-24 md:py-32 bg-background">
+        <motion.div
+          initial="hidden"
+          whileInView="visible"
+          viewport={{ once: true, margin: "-80px" }}
+          variants={fadeUp}
+          className="max-w-3xl mx-auto px-4 md:px-6 text-center"
+        >
+          <span className="text-primary font-semibold tracking-widest uppercase text-sm mb-4 block">
+            Willkommen bei ElbStay
+          </span>
+          <h2 className="font-serif text-3xl md:text-5xl font-bold text-foreground mb-8 leading-tight">
+            Mehr als eine Unterkunft –<br className="hidden sm:block" /> ein Gefühl von Zuhause.
+          </h2>
+          <p className="text-muted-foreground text-lg md:text-xl leading-relaxed">
+            Unsere Apartments verbinden durchdachtes Design mit dem Charme Dresdens.
+            Ob ein romantisches Wochenende zu zweit, ein Städtetrip mit Freunden oder
+            eine ruhige Auszeit vom Alltag – bei ElbStay finden Sie den perfekten Ort,
+            um Dresden zu erleben und sich gleichzeitig wie zu Hause zu fühlen.
+          </p>
+        </motion.div>
+      </section>
 
-        <div className="max-w-7xl mx-auto px-4 md:px-6 relative z-10">
-          <motion.div 
+      {/* ═══════════════════════════════════════════
+          3. AUSSTATTUNG (Icon-Grid)
+      ═══════════════════════════════════════════ */}
+      <section className="py-24 md:py-32 bg-muted/40 border-y border-border/40">
+        <div className="max-w-7xl mx-auto px-4 md:px-6">
+          <motion.div
             initial="hidden"
             whileInView="visible"
-            viewport={{ once: true, margin: "-100px" }}
-            variants={fadeUpVar}
-            className="mb-16 md:mb-20 text-center max-w-3xl mx-auto"
+            viewport={{ once: true, margin: "-80px" }}
+            variants={fadeUp}
+            className="text-center mb-16"
           >
-            <span className="text-primary font-semibold tracking-widest uppercase text-sm mb-4 block">Ihre Vorteile</span>
-            <h2 className="font-serif text-4xl md:text-5xl lg:text-6xl font-bold text-foreground mb-6">Warum ElbStay?</h2>
-            <p className="text-muted-foreground text-lg md:text-xl leading-relaxed">
-              Mehr als nur ein Schlafplatz. Wir bieten durchdachtes Design, kompromisslosen Komfort und Features, die Ihren Aufenthalt in Dresden unvergesslich machen.
+            <span className="text-primary font-semibold tracking-widest uppercase text-sm mb-4 block">
+              Ausstattung
+            </span>
+            <h2 className="font-serif text-3xl md:text-5xl font-bold text-foreground mb-6">
+              Alles, was Sie brauchen.
+            </h2>
+            <p className="text-muted-foreground text-lg max-w-2xl mx-auto leading-relaxed">
+              Unsere Apartments sind vollständig ausgestattet, damit Sie sich auf das Wesentliche konzentrieren können: Ihre Zeit in Dresden genießen.
             </p>
           </motion.div>
 
-          <motion.div 
+          <motion.div
             initial="hidden"
             whileInView="visible"
-            viewport={{ once: true, margin: "-100px" }}
-            variants={staggerContainer}
-            className="grid grid-cols-1 md:grid-cols-3 gap-6 auto-rows-[280px]"
+            viewport={{ once: true, margin: "-60px" }}
+            variants={stagger}
+            className="grid grid-cols-2 sm:grid-cols-4 gap-6 md:gap-8"
           >
-            {/* Box 1: Lage */}
-            <motion.div variants={fadeUpVar} className="col-span-1 md:col-span-2 row-span-1 bg-muted rounded-[2rem] p-8 md:p-10 relative overflow-hidden group hover:shadow-xl transition-all duration-500 border border-border/40">
-              <div className="absolute inset-0 bg-gradient-to-br from-primary/5 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500"></div>
-              <div className="relative z-10 h-full flex flex-col justify-between">
-                <div className="flex items-start justify-between">
-                  <div className="h-14 w-14 rounded-2xl bg-background flex items-center justify-center shadow-sm">
-                    <MapPin className="h-7 w-7 text-primary" />
+            {AMENITIES.map((item, idx) => (
+              <motion.div
+                key={idx}
+                variants={fadeUp}
+                className="flex flex-col items-center text-center p-6 rounded-2xl bg-background border border-border/50 hover:shadow-lg hover:-translate-y-1 transition-all duration-300 group"
+              >
+                <div className="h-14 w-14 rounded-xl bg-primary/8 flex items-center justify-center mb-4 group-hover:bg-primary/15 transition-colors">
+                  <item.icon className="h-7 w-7 text-primary" />
+                </div>
+                <span className="text-sm font-semibold text-foreground">{item.label}</span>
+              </motion.div>
+            ))}
+          </motion.div>
+        </div>
+      </section>
+
+      {/* ═══════════════════════════════════════════
+          4. LAGE
+      ═══════════════════════════════════════════ */}
+      <section className="py-24 md:py-32 bg-background">
+        <div className="max-w-7xl mx-auto px-4 md:px-6">
+          <motion.div
+            initial="hidden"
+            whileInView="visible"
+            viewport={{ once: true, margin: "-80px" }}
+            variants={stagger}
+            className="grid md:grid-cols-2 gap-12 lg:gap-20 items-center"
+          >
+            {/* Text */}
+            <motion.div variants={fadeUp}>
+              <span className="text-primary font-semibold tracking-widest uppercase text-sm mb-4 block">
+                Standort
+              </span>
+              <h2 className="font-serif text-3xl md:text-5xl font-bold text-foreground mb-6 leading-tight">
+                Zentral an der Elbe.<br className="hidden md:block" /> Mitten im Herzen Dresdens.
+              </h2>
+              <p className="text-muted-foreground text-lg leading-relaxed mb-8">
+                Unsere Apartments liegen in einer der begehrtesten Lagen Dresdens – direkt an der Elbe
+                und nur wenige Gehminuten von Frauenkirche, Zwinger und Semperoper entfernt.
+                Die belebte Dresdner Neustadt mit ihren Cafés und Boutiquen ist ebenfalls fußläufig erreichbar.
+              </p>
+              <div className="space-y-4">
+                {[
+                  "5 Min. zu Fuß zur Frauenkirche",
+                  "10 Min. zum Zwinger & Semperoper",
+                  "Elbradweg direkt vor der Tür",
+                  "Straßenbahn-Haltestelle in 2 Min.",
+                ].map((item, idx) => (
+                  <div key={idx} className="flex items-center gap-3">
+                    <MapPin className="h-5 w-5 text-primary shrink-0" />
+                    <span className="text-foreground font-medium">{item}</span>
                   </div>
-                </div>
-                <div>
-                  <h3 className="text-2xl md:text-3xl font-bold mb-3 tracking-tight">Zentrale Bestlage</h3>
-                  <p className="text-muted-foreground text-lg max-w-md leading-relaxed">
-                    Ob Frauenkirche, Zwinger oder Szeneviertel – von unseren Apartments erreichen Sie alle Highlights in wenigen Minuten.
-                  </p>
-                </div>
+                ))}
               </div>
             </motion.div>
 
-            {/* Box 2: Check-in */}
-            <motion.div variants={fadeUpVar} className="col-span-1 row-span-1 bg-primary text-primary-foreground rounded-[2rem] p-8 md:p-10 flex flex-col justify-between relative overflow-hidden group hover:shadow-xl transition-all duration-500 hover:-translate-y-1">
-              <div className="absolute top-0 right-0 p-8 opacity-20 transform translate-x-4 -translate-y-4 group-hover:scale-110 transition-transform duration-500">
-                <Key className="h-32 w-32" />
-              </div>
-              <div className="relative z-10 h-full flex flex-col justify-end">
-                <h3 className="text-2xl md:text-3xl font-bold mb-3 tracking-tight">Smart Check-in</h3>
-                <p className="opacity-90 text-lg leading-relaxed">
-                  Maximal flexibel anreisen mittels digitalem Zugangscode. Keine Wartezeiten auf Schlüssel.
-                </p>
-              </div>
-            </motion.div>
-
-            {/* Box 3: Ausstattung */}
-            <motion.div variants={fadeUpVar} className="col-span-1 row-span-1 bg-card rounded-[2rem] p-8 md:p-10 flex flex-col justify-between border border-border/40 hover:shadow-xl transition-all duration-500 hover:-translate-y-1 group">
-              <div className="h-14 w-14 rounded-2xl bg-muted flex items-center justify-center shadow-sm group-hover:bg-primary/10 transition-colors">
-                <Wifi className="h-7 w-7 text-primary" />
-              </div>
-              <div>
-                <h3 className="text-2xl font-bold mb-3 tracking-tight">High-Speed WLAN</h3>
-                <p className="text-muted-foreground text-lg leading-relaxed">
-                  Ultraschnelles Internet & Smart-TVs für entspanntes Streaming oder reibungsloses Home-Office.
-                </p>
-              </div>
-            </motion.div>
-
-            {/* Box 4: Direktbuchung */}
-            <motion.div variants={fadeUpVar} className="col-span-1 md:col-span-2 row-span-1 bg-[#1A1F2C] text-white rounded-[2rem] p-8 md:p-10 flex border border-border/40 relative overflow-hidden group hover:shadow-xl transition-all duration-500">
-              <div className="absolute inset-0 bg-[url('/images/dresden_skyline_sunset.png')] bg-cover bg-center opacity-20 mix-blend-overlay group-hover:scale-105 transition-transform duration-700"></div>
-              <div className="relative z-10 w-full flex flex-col justify-between">
-                <div className="flex items-start justify-between">
-                  <div className="h-14 w-14 rounded-2xl bg-white/10 backdrop-blur-md flex items-center justify-center border border-white/20">
-                    <Percent className="h-7 w-7 text-white" />
-                  </div>
-                  <span className="bg-white text-[#1A1F2C] font-bold px-4 py-1.5 rounded-full text-sm shadow-md">
-                    Exklusiv hier
-                  </span>
-                </div>
-                <div>
-                  <h3 className="text-2xl md:text-3xl font-bold mb-3 tracking-tight">7% Günstiger buchen</h3>
-                  <p className="text-white/80 text-lg max-w-lg leading-relaxed">
-                    Warum Plattform-Gebühren zahlen? Buchen Sie direkt über unsere Website und sparen Sie bares Geld bei voller Flexibilität.
-                  </p>
+            {/* Image */}
+            <motion.div
+              variants={fadeUp}
+              className="relative h-[400px] md:h-[500px] rounded-2xl overflow-hidden shadow-xl"
+            >
+              <Image
+                src="/images/dresden_hero_user_final.jpg"
+                alt="Dresden Lage – Blick auf Elbe und Altstadt"
+                fill
+                className="object-cover"
+                sizes="(max-width: 768px) 100vw, 50vw"
+                unoptimized
+              />
+              <div className="absolute inset-0 bg-gradient-to-t from-black/30 to-transparent" />
+              <div className="absolute bottom-6 left-6 bg-white/90 backdrop-blur-sm rounded-xl px-5 py-3 shadow-lg">
+                <div className="flex items-center gap-2">
+                  <MapPin className="h-5 w-5 text-primary" />
+                  <span className="font-semibold text-foreground text-sm">Dresden · Innere Altstadt</span>
                 </div>
               </div>
             </motion.div>
@@ -208,34 +376,98 @@ export default function Home() {
         </div>
       </section>
 
-      {/* Apartments Section */}
-      <section id="apartments" className="py-24 md:py-32 bg-muted/30 border-t border-border/50 overflow-hidden">
+      {/* ═══════════════════════════════════════════
+          5. DIREKTBUCHUNGS-VORTEILE + APARTMENTS
+      ═══════════════════════════════════════════ */}
+      <section id="apartments" className="py-24 md:py-32 bg-muted/30 border-y border-border/40">
         <div className="max-w-7xl mx-auto px-4 md:px-6">
-          <motion.div 
-            initial="hidden" 
-            whileInView="visible" 
-            viewport={{ once: true, margin: "-100px" }} 
-            variants={fadeUpVar} 
-            className="flex flex-col md:flex-row md:items-end justify-between mb-16 gap-6"
+          {/* Direktbuchungs-Vorteile */}
+          <motion.div
+            initial="hidden"
+            whileInView="visible"
+            viewport={{ once: true, margin: "-80px" }}
+            variants={fadeUp}
+            className="text-center mb-16"
           >
-            <div>
-              <span className="text-primary font-semibold tracking-wider uppercase text-sm mb-3 block">Unterkünfte</span>
-              <h2 className="font-serif text-4xl md:text-5xl lg:text-6xl font-bold text-foreground tracking-tight">Unsere Welten</h2>
-            </div>
-            <p className="text-muted-foreground text-lg max-w-md leading-relaxed pb-2">
-              Jedes Apartment ein Unikat. Finden Sie das perfekte Zuhause auf Zeit für Ihre Ansprüche in Dresden.
+            <span className="text-primary font-semibold tracking-widest uppercase text-sm mb-4 block">
+              Direkt buchen & sparen
+            </span>
+            <h2 className="font-serif text-3xl md:text-5xl font-bold text-foreground mb-6">
+              Warum direkt bei uns buchen?
+            </h2>
+            <p className="text-muted-foreground text-lg max-w-2xl mx-auto leading-relaxed">
+              Sie finden uns auch auf Airbnb und Booking.com – aber direkt bei uns erhalten Sie immer den besten Preis und persönlichen Service.
             </p>
           </motion.div>
 
-          <motion.div 
-            initial="hidden" 
-            whileInView="visible" 
-            viewport={{ once: true, margin: "-100px" }} 
-            variants={staggerContainer} 
+          <motion.div
+            initial="hidden"
+            whileInView="visible"
+            viewport={{ once: true, margin: "-60px" }}
+            variants={stagger}
+            className="grid md:grid-cols-3 gap-8 mb-20"
+          >
+            {[
+              {
+                icon: Percent,
+                title: "Bestpreis-Garantie",
+                text: "Sparen Sie die Plattform-Gebühren. Direkt bei uns buchen Sie immer mindestens 7% günstiger als auf Airbnb oder Booking.",
+              },
+              {
+                icon: HeartHandshake,
+                title: "Flexible Stornierung",
+                text: "Kostenlose Stornierung bis 7 Tage vor Anreise. Bei uns buchen Sie ohne Risiko und mit maximaler Flexibilität.",
+              },
+              {
+                icon: PhoneCall,
+                title: "Persönlicher Kontakt",
+                text: "Kein Bot, keine Hotline. Wir sind echte Gastgeber aus Dresden und bei Fragen direkt für Sie erreichbar.",
+              },
+            ].map((item, idx) => (
+              <motion.div
+                key={idx}
+                variants={fadeUp}
+                className="bg-background rounded-2xl p-8 border border-border/50 hover:shadow-lg transition-all duration-300 hover:-translate-y-1 group"
+              >
+                <div className="h-14 w-14 rounded-xl bg-primary/8 flex items-center justify-center mb-6 group-hover:bg-primary/15 transition-colors">
+                  <item.icon className="h-7 w-7 text-primary" />
+                </div>
+                <h3 className="text-xl font-bold text-foreground mb-3">{item.title}</h3>
+                <p className="text-muted-foreground leading-relaxed">{item.text}</p>
+              </motion.div>
+            ))}
+          </motion.div>
+
+          {/* Apartment-Karten */}
+          <motion.div
+            initial="hidden"
+            whileInView="visible"
+            viewport={{ once: true, margin: "-80px" }}
+            variants={fadeUp}
+            className="flex flex-col md:flex-row md:items-end justify-between mb-12 gap-6"
+          >
+            <div>
+              <span className="text-primary font-semibold tracking-wider uppercase text-sm mb-3 block">
+                Unsere Apartments
+              </span>
+              <h2 className="font-serif text-3xl md:text-4xl font-bold text-foreground tracking-tight">
+                Finden Sie Ihr Zuhause auf Zeit
+              </h2>
+            </div>
+            <p className="text-muted-foreground text-lg max-w-md leading-relaxed pb-1">
+              Jedes Apartment ein Unikat – mit viel Liebe zum Detail eingerichtet.
+            </p>
+          </motion.div>
+
+          <motion.div
+            initial="hidden"
+            whileInView="visible"
+            viewport={{ once: true, margin: "-60px" }}
+            variants={stagger}
             className="grid md:grid-cols-2 gap-8 lg:gap-12"
           >
             {APARTMENTS.map((apt) => (
-              <motion.div key={apt.id} variants={fadeUpVar} className="h-full">
+              <motion.div key={apt.id} variants={fadeUp} className="h-full">
                 <ApartmentCard {...apt} />
               </motion.div>
             ))}
@@ -243,32 +475,215 @@ export default function Home() {
         </div>
       </section>
 
-      {/* Trust Elements Bottom */}
-      <section className="py-20 bg-background border-t border-border/50 overflow-hidden">
-        <motion.div 
-          initial="hidden" 
-          whileInView="visible" 
-          viewport={{ once: true, margin: "-50px" }} 
-          variants={staggerContainer} 
-          className="max-w-7xl mx-auto px-4 md:px-6"
+      {/* ═══════════════════════════════════════════
+          6. BEWERTUNGEN
+      ═══════════════════════════════════════════ */}
+      <section className="py-24 md:py-32 bg-background">
+        <div className="max-w-7xl mx-auto px-4 md:px-6">
+          <motion.div
+            initial="hidden"
+            whileInView="visible"
+            viewport={{ once: true, margin: "-80px" }}
+            variants={fadeUp}
+            className="text-center mb-16"
+          >
+            <span className="text-primary font-semibold tracking-widest uppercase text-sm mb-4 block">
+              Gästestimmen
+            </span>
+            <h2 className="font-serif text-3xl md:text-5xl font-bold text-foreground mb-6">
+              Was unsere Gäste sagen
+            </h2>
+            <div className="flex items-center justify-center gap-2 text-primary">
+              {[...Array(5)].map((_, i) => (
+                <Star key={i} className="h-6 w-6 fill-current" />
+              ))}
+              <span className="ml-2 text-foreground font-semibold text-lg">5.0</span>
+              <span className="text-muted-foreground ml-1">/ 5</span>
+            </div>
+          </motion.div>
+
+          <motion.div
+            initial="hidden"
+            whileInView="visible"
+            viewport={{ once: true, margin: "-60px" }}
+            variants={stagger}
+            className="grid md:grid-cols-3 gap-8"
+          >
+            {REVIEWS.map((review, idx) => (
+              <motion.div
+                key={idx}
+                variants={fadeUp}
+                className="bg-muted/40 rounded-2xl p-8 border border-border/40 hover:shadow-lg transition-all duration-300"
+              >
+                <div className="flex items-center gap-1 mb-4">
+                  {[...Array(review.stars)].map((_, i) => (
+                    <Star key={i} className="h-4 w-4 text-primary fill-current" />
+                  ))}
+                </div>
+                <p className="text-foreground leading-relaxed mb-6 italic">
+                  &ldquo;{review.text}&rdquo;
+                </p>
+                <div className="border-t border-border/40 pt-4">
+                  <p className="font-semibold text-foreground">{review.name}</p>
+                  <p className="text-sm text-muted-foreground">{review.date}</p>
+                </div>
+              </motion.div>
+            ))}
+          </motion.div>
+        </div>
+      </section>
+
+      {/* ═══════════════════════════════════════════
+          7. DRESDEN-ERLEBNIS
+      ═══════════════════════════════════════════ */}
+      <section className="py-24 md:py-32 bg-muted/30 border-y border-border/40">
+        <div className="max-w-7xl mx-auto px-4 md:px-6">
+          <motion.div
+            initial="hidden"
+            whileInView="visible"
+            viewport={{ once: true, margin: "-80px" }}
+            variants={fadeUp}
+            className="text-center mb-16"
+          >
+            <span className="text-primary font-semibold tracking-widest uppercase text-sm mb-4 block">
+              Entdecken
+            </span>
+            <h2 className="font-serif text-3xl md:text-5xl font-bold text-foreground mb-6">
+              Dresden erleben
+            </h2>
+            <p className="text-muted-foreground text-lg max-w-2xl mx-auto leading-relaxed">
+              Barock, Kultur und Natur – direkt vor Ihrer Haustür. Entdecken Sie eine der
+              schönsten Städte Deutschlands von der besten Ausgangslage.
+            </p>
+          </motion.div>
+
+          <motion.div
+            initial="hidden"
+            whileInView="visible"
+            viewport={{ once: true, margin: "-60px" }}
+            variants={stagger}
+            className="grid sm:grid-cols-2 lg:grid-cols-4 gap-6"
+          >
+            {DRESDEN_HIGHLIGHTS.map((item, idx) => (
+              <motion.div
+                key={idx}
+                variants={fadeUp}
+                className="bg-background rounded-2xl p-6 border border-border/50 hover:shadow-lg transition-all duration-300 hover:-translate-y-1 group"
+              >
+                <div className="h-12 w-12 rounded-xl bg-primary/8 flex items-center justify-center mb-5 group-hover:bg-primary/15 transition-colors">
+                  <item.icon className="h-6 w-6 text-primary" />
+                </div>
+                <h3 className="text-lg font-bold text-foreground mb-2">{item.title}</h3>
+                <p className="text-muted-foreground text-sm leading-relaxed">{item.text}</p>
+              </motion.div>
+            ))}
+          </motion.div>
+        </div>
+      </section>
+
+      {/* ═══════════════════════════════════════════
+          8. FAQ
+      ═══════════════════════════════════════════ */}
+      <section className="py-24 md:py-32 bg-background">
+        <div className="max-w-3xl mx-auto px-4 md:px-6">
+          <motion.div
+            initial="hidden"
+            whileInView="visible"
+            viewport={{ once: true, margin: "-80px" }}
+            variants={fadeUp}
+            className="text-center mb-16"
+          >
+            <span className="text-primary font-semibold tracking-widest uppercase text-sm mb-4 block">
+              Häufige Fragen
+            </span>
+            <h2 className="font-serif text-3xl md:text-5xl font-bold text-foreground">
+              Gut zu wissen
+            </h2>
+          </motion.div>
+
+          <motion.div
+            initial="hidden"
+            whileInView="visible"
+            viewport={{ once: true, margin: "-60px" }}
+            variants={fadeUp}
+            className="border-t border-border/60"
+          >
+            {FAQS.map((faq, idx) => (
+              <FaqItem key={idx} q={faq.q} a={faq.a} />
+            ))}
+          </motion.div>
+        </div>
+      </section>
+
+      {/* ═══════════════════════════════════════════
+          9. FINALER CTA
+      ═══════════════════════════════════════════ */}
+      <section id="book" className="py-24 md:py-32 bg-[#2d2d2d] text-white relative overflow-hidden">
+        {/* Subtle background pattern */}
+        <div className="absolute inset-0 opacity-5">
+          <Image
+            src="/images/dresden_hero_user_final.jpg"
+            alt=""
+            fill
+            className="object-cover"
+            unoptimized
+          />
+        </div>
+
+        <motion.div
+          initial="hidden"
+          whileInView="visible"
+          viewport={{ once: true, margin: "-80px" }}
+          variants={stagger}
+          className="relative z-10 max-w-3xl mx-auto px-4 md:px-6 text-center"
         >
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-8 md:gap-12 text-center divide-y md:divide-y-0 md:divide-x divide-border/50">
-            <motion.div variants={fadeUpVar} className="flex flex-col items-center pt-8 md:pt-0 pb-8 md:pb-0 px-4">
-              <ShieldCheck className="h-10 w-10 text-primary mb-4" />
-              <h4 className="text-xl font-bold mb-2">Sichere Buchung</h4>
-              <p className="text-muted-foreground">Einfache und absolut sichere Zahlung in Echtzeit via PayPal, Stripe oder Kreditkarte.</p>
-            </motion.div>
-            <motion.div variants={fadeUpVar} className="flex flex-col items-center py-8 md:py-0 px-4">
-              <Coffee className="h-10 w-10 text-primary mb-4" />
-              <h4 className="text-xl font-bold mb-2">Voll Ausgestattet</h4>
-              <p className="text-muted-foreground">Kaffeemaschine, frische Handtücher und Premium-Pflegeprodukte inklusive.</p>
-            </motion.div>
-            <motion.div variants={fadeUpVar} className="flex flex-col items-center pt-8 md:pt-0 px-4">
-              <MessageCircle className="h-10 w-10 text-primary mb-4" />
-              <h4 className="text-xl font-bold mb-2">Persönlicher Support</h4>
-              <p className="text-muted-foreground">Wir sind echte Gastgeber aus Dresden und helfen bei Fragen gerne weiter.</p>
-            </motion.div>
-          </div>
+          <motion.span
+            variants={fadeUp}
+            className="inline-block py-1.5 px-5 rounded-full bg-white/10 border border-white/20 text-white/90 text-sm tracking-[0.15em] uppercase font-medium mb-8"
+          >
+            Jetzt buchen
+          </motion.span>
+
+          <motion.h2
+            variants={fadeUp}
+            className="font-serif text-4xl md:text-6xl font-bold mb-6 leading-tight"
+          >
+            Bereit für Dresden?
+          </motion.h2>
+
+          <motion.p
+            variants={fadeUp}
+            className="text-white/75 text-lg md:text-xl leading-relaxed mb-10 max-w-xl mx-auto"
+          >
+            Sichern Sie sich jetzt Ihren Wunschtermin und erleben Sie Dresden
+            von seiner schönsten Seite – direkt an der Elbe, zum besten Preis.
+          </motion.p>
+
+          <motion.div variants={fadeUp} className="flex flex-col sm:flex-row items-center justify-center gap-4 mb-10">
+            <Link href="/apartments/urban#book" className="w-full sm:w-auto">
+              <Button size="lg" className="w-full text-base h-14 px-10 rounded-full shadow-xl hover:scale-105 transition-transform duration-300 bg-white text-[#2d2d2d] hover:bg-white/90">
+                <CalendarCheck className="mr-2 h-5 w-5" />
+                Verfügbarkeit prüfen
+              </Button>
+            </Link>
+            <Link href="#apartments" className="w-full sm:w-auto">
+              <Button
+                size="lg"
+                variant="outline"
+                className="w-full text-base h-14 px-10 rounded-full bg-transparent text-white border-white/30 hover:bg-white/10 transition-all duration-300"
+              >
+                Apartments ansehen
+                <ArrowRight className="ml-2 h-5 w-5" />
+              </Button>
+            </Link>
+          </motion.div>
+
+          <motion.p variants={fadeUp} className="text-white/50 text-sm">
+            Auch verfügbar auf{" "}
+            <span className="text-white/70 font-medium">Airbnb</span> und{" "}
+            <span className="text-white/70 font-medium">Booking.com</span>{" "}
+            – aber direkt bei uns immer zum besten Preis.
+          </motion.p>
         </motion.div>
       </section>
     </div>
