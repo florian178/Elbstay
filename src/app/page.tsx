@@ -22,7 +22,7 @@ const APARTMENTS = [
     id: "urban-1",
     name: "ElbStay Urban",
     type: "Urban" as const,
-    description: "Modernes Design-Apartment im Herzen von Dresden. Perfekt für Paare und Business-Reisende, die Wert auf Stil und Komfort legen.",
+    description: "Klare Linien, warme Materialien und ein durchdachtes Raumgefühl – für alle, die Design und Ruhe lieben.",
     guests: 4,
     beds: "1 Bett + 1 Schlafcouch",
     size: 55,
@@ -33,7 +33,7 @@ const APARTMENTS = [
     id: "premium-1",
     name: "ElbStay Premium",
     type: "Premium" as const,
-    description: "Exklusives Penthouse mit weitläufiger Dachterrasse und Panoramablick über Dresden. Luxus und Erlebnis für Familien und Gruppen.",
+    description: "Dachterrasse mit Elbblick, großzügige Räume und Premium-Ausstattung – Ihr privates Penthouse über Dresden.",
     guests: 6,
     beds: "2 Betten + 1 Schlafcouch",
     size: 120,
@@ -58,19 +58,19 @@ const REVIEWS = [
     name: "Sarah & Markus",
     date: "März 2026",
     stars: 5,
-    text: "Ein wunderschönes Apartment mit Liebe zum Detail. Die Lage direkt an der Elbe ist ein Traum – wir haben jeden Morgen den Sonnenaufgang genossen. Absolut empfehlenswert!",
+    text: "Morgens Kaffee mit Elbblick, abends zu Fuß in die Altstadt – so hatten wir uns Dresden vorgestellt. Die Wohnung ist geschmackvoll bis ins Detail.",
   },
   {
     name: "Dr. Thomas Richter",
     date: "Februar 2026",
     stars: 5,
-    text: "Perfekt für meinen Geschäftsaufenthalt. Schnelles WLAN, ruhige Lage und trotzdem alles fußläufig erreichbar. Die Direktbuchung war unkompliziert und günstig.",
+    text: "Ruhig, zentral, schnelles WLAN – perfekt für meinen Business-Trip. Die Direktbuchung hat mir 15€ pro Nacht gespart. Komme definitiv wieder.",
   },
   {
     name: "Julia & Freundinnen",
     date: "Januar 2026",
     stars: 5,
-    text: "Unser Mädels-Wochenende in Dresden war dank ElbStay einfach perfekt. Die Wohnung ist wunderschön, die Küche top ausgestattet und die Altstadt nur Minuten entfernt.",
+    text: "Drei Tage Dresden mit den Mädels – und die Wohnung war das Highlight. Großzügig, stylish, und die Küche hat sogar einen Weinkühler!",
   },
 ];
 
@@ -78,25 +78,25 @@ const DRESDEN_HIGHLIGHTS = [
   {
     icon: Landmark,
     title: "Frauenkirche & Altstadt",
-    text: "Barocke Architektur, Semperoper und der berühmte Striezelmarkt – alles in 10 Minuten zu Fuß.",
+    text: "Durch kopfsteingepflasterte Gassen schlendern, die Semperoper bestaunen und danach ein Eis am Neumarkt.",
     distance: "10 Min.",
   },
   {
     icon: TreePine,
     title: "Elbwiesen & Natur",
-    text: "Direkt vor der Tür: Spaziergänge entlang der Elbe mit Blick auf das Elbflorenz-Panorama.",
+    text: "Morgens joggen am Wasser, abends den Sonnenuntergang über der Skyline genießen – direkt vor der Tür.",
     distance: "1 Min.",
   },
   {
     icon: Bike,
     title: "Elbradweg",
-    text: "Einer der schönsten Radwege Europas führt direkt an unseren Apartments vorbei.",
+    text: "Auf einem der schönsten Radwege Europas bis ins Elbsandsteingebirge – Start direkt am Apartment.",
     distance: "Vor der Tür",
   },
   {
     icon: Music,
     title: "Dresdner Neustadt",
-    text: "Das kreative Szeneviertel mit unzähligen Cafés, Boutiquen und Bars – nur wenige Minuten entfernt.",
+    text: "Craft-Kaffee, Vintage-Läden und das beste Nachtleben der Stadt – alles fußläufig erreichbar.",
     distance: "8 Min.",
   },
 ];
@@ -104,23 +104,43 @@ const DRESDEN_HIGHLIGHTS = [
 const FAQS = [
   {
     q: "Wie funktioniert der Check-in?",
-    a: "Sie erhalten vor Ihrer Anreise einen digitalen Zugangscode per E-Mail. Damit können Sie jederzeit – 24 Stunden am Tag, 7 Tage die Woche – selbstständig einchecken. Kein Schlüssel, keine Wartezeit.",
+    a: "Unkompliziert: Sie erhalten vor Anreise einen digitalen Zugangscode per E-Mail. Damit checken Sie 24/7 eigenständig ein – kein Schlüssel, keine Wartezeit.",
   },
   {
     q: "Gibt es Parkmöglichkeiten?",
-    a: "Ja, in unmittelbarer Nähe befinden sich mehrere öffentliche Parkplätze und Parkhäuser. Auf Anfrage vermitteln wir Ihnen gerne einen Stellplatz.",
+    a: "Ja. Mehrere Parkplätze und Parkhäuser befinden sich in direkter Nähe. Gerne reservieren wir auf Anfrage einen festen Stellplatz für Sie.",
   },
   {
     q: "Sind Haustiere erlaubt?",
-    a: "In unseren Apartments sind leider keine Haustiere gestattet, um allen Gästen ein sauberes und allergenfreies Umfeld zu bieten.",
+    a: "Leider nein – um allen Gästen ein sauberes, allergenfreies Umfeld zu garantieren, nehmen wir keine Haustiere auf.",
   },
   {
     q: "Wie ist die Stornierungsregelung?",
-    a: "Bei Direktbuchung bieten wir eine flexible Stornierung bis 7 Tage vor Anreise an. Danach berechnen wir 50% des Gesamtpreises. Details finden Sie in unseren AGB.",
+    a: "Bei Direktbuchung: kostenlose Stornierung bis 7 Tage vor Anreise. Danach 50% des Gesamtpreises. Deutlich flexibler als Airbnb oder Booking.",
   },
   {
     q: "Wie komme ich am besten nach Dresden?",
-    a: "Dresden ist hervorragend per Bahn (Hauptbahnhof in 15 Min.), Auto (A4/A17) und Flugzeug (Flughafen Dresden, 20 Min.) erreichbar. Vom Bahnhof fahren Sie mit der Straßenbahn direkt zu uns.",
+    a: "Per Bahn: Hauptbahnhof in 15 Min. Per Auto: A4/A17 direkt nach Dresden. Per Flugzeug: Flughafen Dresden in 20 Min. Die Straßenbahn bringt Sie direkt zu uns.",
+  },
+  {
+    q: "Wie weit ist es zur Dresdner Altstadt?",
+    a: "Die Frauenkirche erreichen Sie in 10 Minuten zu Fuß, den Zwinger und die Semperoper in etwa 15 Minuten. Die Straßenbahn-Haltestelle ist 150m entfernt.",
+  },
+  {
+    q: "Für wen sind die Apartments geeignet?",
+    a: "Für alle, die Wert auf Stil und Ruhe legen: Paare, Städtereisende, Business-Gäste und kleine Familien. Das ElbStay Urban ist perfekt für 1–2 Personen, das Premium für bis zu 6 Gäste.",
+  },
+  {
+    q: "Warum direkt buchen statt über Airbnb?",
+    a: "Drei gute Gründe: Sie sparen die Plattform-Gebühren (ca. 10%), erhalten flexiblere Stornierungsbedingungen und haben einen persönlichen Ansprechpartner – kein Bot, kein Callcenter.",
+  },
+  {
+    q: "Welche Sehenswürdigkeiten sind in der Nähe?",
+    a: "Frauenkirche, Zwinger, Semperoper und Brühlsche Terrasse sind alle fußläufig erreichbar. Die Dresdner Neustadt mit ihren Cafés und Boutiquen ist nur 8 Minuten entfernt.",
+  },
+  {
+    q: "Gibt es einen Mindestaufenthalt?",
+    a: "Der Mindestaufenthalt beträgt 2 Nächte. Bei längeren Aufenthalten ab 7 Nächten gewähren wir zusätzliche Rabatte – sprechen Sie uns einfach an.",
   },
 ];
 
@@ -296,7 +316,7 @@ export default function Home() {
               className="inline-flex items-center gap-2.5 py-2.5 px-6 rounded-full glass text-white text-sm font-medium mb-10 shadow-lg"
             >
               <Star className="h-4 w-4 fill-amber-400 text-amber-400" />
-              <span className="tracking-wide">4.9 von 5 · Hervorragend bewertet</span>
+              <span className="tracking-wide">4.9 von 5 · Von Gästen empfohlen</span>
             </motion.div>
 
             {/* Main Headline */}
@@ -304,8 +324,8 @@ export default function Home() {
               variants={fadeUpSlow}
               className="font-serif text-[2.75rem] md:text-7xl lg:text-[5.5rem] font-bold text-white mb-8 drop-shadow-lg leading-[1.06] tracking-tight text-balance"
             >
-              Ihr Zuhause in Dresden.<br className="hidden sm:block" />
-              <span className="text-white/75">Direkt an der Elbe.</span>
+              Aufwachen mit Elbblick.<br className="hidden sm:block" />
+              <span className="text-white/75">Ankommen in Dresden.</span>
             </motion.h1>
 
             {/* Subheadline */}
@@ -313,8 +333,8 @@ export default function Home() {
               variants={fadeUp}
               className="text-lg md:text-xl text-white/80 mb-10 leading-relaxed max-w-2xl mx-auto text-balance"
             >
-              Design-Apartments im Herzen der Altstadt – ab 120€ pro Nacht.
-              Buchen Sie direkt und sparen Sie bis zu 15% gegenüber Airbnb.
+              Design-Apartments direkt an der Elbe – für Paare, Städtereisende
+              und alle, die Dresden stilvoll erleben möchten. Ab 120€ / Nacht.
             </motion.p>
 
             {/* Trust Bullets */}
@@ -323,9 +343,9 @@ export default function Home() {
               className="flex flex-wrap items-center justify-center gap-x-8 gap-y-3 mb-12"
             >
               {[
-                { icon: Star, text: "4.9 ★ Bewertung" },
-                { icon: MapPin, text: "5 Min. zur Frauenkirche" },
-                { icon: Percent, text: "Bestpreis bei Direktbuchung" },
+                { icon: Star, text: "4.9 ★ von 50+ Gästen" },
+                { icon: MapPin, text: "10 Min. zur Frauenkirche" },
+                { icon: Percent, text: "ca. 10% günstiger als Airbnb" },
               ].map((item, idx) => (
                 <div key={idx} className="flex items-center gap-2.5 text-white/70 text-sm">
                   <item.icon className="h-4 w-4 text-white/50" />
@@ -339,7 +359,7 @@ export default function Home() {
               <Link href="#book" className="w-full sm:w-auto">
                 <Button size="lg" className="w-full text-base h-16 px-12 rounded-full shadow-2xl hover:scale-[1.03] active:scale-[0.98] transition-all duration-300 font-semibold text-[15px]">
                   <CalendarCheck className="mr-2.5 h-5 w-5" />
-                  Jetzt Verfügbarkeit prüfen
+                  Verfügbarkeit prüfen
                 </Button>
               </Link>
               <Link href="#apartments" className="w-full sm:w-auto">
@@ -348,7 +368,7 @@ export default function Home() {
                   variant="outline"
                   className="w-full text-base h-16 px-10 rounded-full glass text-white border-white/20 hover:bg-white hover:text-foreground hover:border-white transition-all duration-400 shadow-xl font-semibold"
                 >
-                  Apartments entdecken
+                  Apartments ansehen
                   <ArrowRight className="ml-2.5 h-5 w-5" />
                 </Button>
               </Link>
@@ -356,7 +376,7 @@ export default function Home() {
 
             {/* Micro-Trust */}
             <motion.p variants={fadeIn} className="text-white/35 text-xs tracking-widest uppercase">
-              Kostenlose Stornierung · Keine versteckten Gebühren · Sofortige Bestätigung
+              Kostenlose Stornierung · Keine Plattform-Gebühren · Sofortige Bestätigung
             </motion.p>
           </motion.div>
         </motion.div>
@@ -383,17 +403,16 @@ export default function Home() {
             variants={fadeUpSlow}
             className="font-serif text-3xl md:text-[3.25rem] font-bold text-foreground mb-10 leading-[1.15] text-balance"
           >
-            Mehr als eine Unterkunft –
-            ein Gefühl von Zuhause.
+            Ankommen. Kaffee kochen.
+            Auf die Elbe schauen.
           </motion.h2>
           <motion.p
             variants={fadeUp}
             className="text-muted-foreground text-lg md:text-xl leading-[1.8] text-balance"
           >
-            Unsere Apartments verbinden durchdachtes Design mit dem Charme Dresdens.
-            Ob ein romantisches Wochenende zu zweit, ein Städtetrip mit Freunden oder
-            eine ruhige Auszeit vom Alltag – bei ElbStay finden Sie den perfekten Ort,
-            um Dresden zu erleben und sich gleichzeitig wie zu Hause zu fühlen.
+            Kein Hotelflur, kein Warteschlange am Frühstücksbuffet – stattdessen
+            Ihr eigener Rückzugsort mit allem, was Sie brauchen. Durchdachtes Design,
+            Ruhe und die schönste Stadt Sachsens direkt vor der Tür.
           </motion.p>
         </motion.div>
       </section>
@@ -470,11 +489,11 @@ export default function Home() {
               <SectionLabel>Standort</SectionLabel>
               <h2 className="font-serif text-3xl md:text-[3.25rem] font-bold text-foreground mb-8 leading-[1.12] text-balance">
                 Zentral an der Elbe.
-                Mitten im Herzen Dresdens.
+                Alles fußläufig.
               </h2>
               <p className="text-muted-foreground text-lg leading-[1.8] mb-10">
-                Unsere Apartments liegen in einer der begehrtesten Lagen Dresdens – direkt an der Elbe
-                und nur wenige Gehminuten von Frauenkirche, Zwinger und Semperoper entfernt.
+                Die Frauenkirche zum Abendspaziergang, der Elbradweg für morgens,
+                die Neustadt für abends – von uns aus erreichen Sie alles in Minuten.
               </p>
               <div className="space-y-5">
                 {[
@@ -558,10 +577,11 @@ export default function Home() {
               variants={fadeUpSlow}
               className="font-serif text-3xl md:text-[3.25rem] font-bold text-foreground mb-6 text-balance"
             >
-              Warum direkt bei uns buchen?
+              Direkt buchen. Mehr sparen.
             </motion.h2>
             <motion.p variants={fadeUp} className="text-muted-foreground text-lg max-w-2xl mx-auto leading-relaxed">
-              Auch auf Airbnb und Booking.com – aber direkt bei uns erhalten Sie immer den besten Preis und persönlichen Service.
+              Sie finden uns auch auf Airbnb und Booking.com. Aber: Direkt bei uns sparen Sie
+              die Plattform-Gebühren – und bekommen persönlichen Service dazu.
             </motion.p>
           </motion.div>
 
@@ -576,20 +596,20 @@ export default function Home() {
               {
                 icon: Percent,
                 title: "Bestpreis-Garantie",
-                text: "Sparen Sie die Plattform-Gebühren. Direkt bei uns buchen Sie mindestens 7% günstiger als auf Airbnb oder Booking.",
-                highlight: "–7%",
+                text: "Keine Vermittlungsgebühr, kein Aufschlag. Bei uns sparen Sie ca. 10% gegenüber Airbnb und Booking.",
+                highlight: "– 10%",
               },
               {
                 icon: HeartHandshake,
-                title: "Flexible Stornierung",
-                text: "Kostenlose Stornierung bis 7 Tage vor Anreise. Buchen Sie ohne Risiko und mit maximaler Flexibilität.",
+                title: "Flexibel stornieren",
+                text: "Kostenlos stornieren bis 7 Tage vor Anreise. Keine Anzahlung, kein Risiko.",
                 highlight: "Gratis",
               },
               {
                 icon: PhoneCall,
-                title: "Persönlicher Kontakt",
-                text: "Kein Bot, keine Hotline. Wir sind echte Gastgeber aus Dresden und bei Fragen direkt für Sie erreichbar.",
-                highlight: "24/7",
+                title: "Echte Gastgeber",
+                text: "Kein Bot, kein Callcenter. Wir sind vor Ort in Dresden und helfen Ihnen persönlich.",
+                highlight: "Direkt",
               },
             ].map((item, idx) => (
               <motion.div
@@ -841,15 +861,15 @@ export default function Home() {
             variants={fadeUpSlow}
             className="font-serif text-4xl md:text-6xl lg:text-7xl font-bold mb-8 leading-[1.08] text-balance"
           >
-            Bereit für Dresden?
+            Ihr Dresden wartet.
           </motion.h2>
 
           <motion.p
             variants={fadeUp}
             className="text-white/60 text-lg md:text-xl leading-relaxed mb-12 max-w-xl mx-auto text-balance"
           >
-            Sichern Sie sich jetzt Ihren Wunschtermin und erleben Sie Dresden
-            von seiner schönsten Seite – direkt an der Elbe, zum besten Preis.
+            Sichern Sie sich Ihren Wunschtermin – direkt, ohne Umwege,
+            zum garantiert besten Preis.
           </motion.p>
 
           <motion.div variants={fadeUp} className="flex flex-col sm:flex-row items-center justify-center gap-4 mb-12">
@@ -875,7 +895,7 @@ export default function Home() {
             Auch verfügbar auf{" "}
             <span className="text-white/50 font-medium">Airbnb</span> und{" "}
             <span className="text-white/50 font-medium">Booking.com</span>{" "}
-            – aber direkt bei uns immer zum besten Preis.
+            – aber direkt bei uns ca. 10% günstiger.
           </motion.p>
         </motion.div>
       </section>
