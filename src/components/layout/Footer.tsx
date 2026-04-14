@@ -6,9 +6,13 @@ export function Footer() {
       <div className="max-w-7xl mx-auto px-4 md:px-6">
         <div className="grid grid-cols-1 md:grid-cols-4 gap-8 lg:gap-12">
           <div className="md:col-span-1">
-            <span className="font-serif text-2xl font-bold tracking-tight text-white">
-              ElbStay
-            </span>
+            <div className="flex items-center space-x-2">
+              <img 
+                src="/images/elbstay-logo-official.png" 
+                alt="ElbStay Logo" 
+                className="h-10 w-auto invert brightness-200" 
+              />
+            </div>
             <p className="mt-4 text-sm text-background/70 leading-relaxed max-w-xs">
               Stilvoll wohnen in Dresden. Boutique-Apartments für anspruchsvolle Reisende, Business-Gäste und Gruppen.
             </p>

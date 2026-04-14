@@ -36,11 +36,11 @@ export function Header() {
         {/* Logo */}
         <Link href="/" className="flex items-center space-x-2 z-50">
           <Image 
-            src="/images/elbstay-logo.png" 
+            src="/images/elbstay-logo-official.png" 
             alt="ElbStay Logo" 
             width={240} 
-            height={96} 
-            className="object-contain h-16 md:h-20 w-auto" 
+            height={80} 
+            className="object-contain h-10 md:h-14 w-auto" 
             priority
             unoptimized
           />
